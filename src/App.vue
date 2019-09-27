@@ -2,8 +2,13 @@
   <div id="app">
     <div class="app-container">
       <user-input v-on:submitCity="sendRequest($event)"></user-input>
-      <div v-for="day in forecastData">
-        <day-weather :dayData="day"></day-weather>
+      <div v-for="(day,index) in forecastData">
+        <day-weather
+          :dayData="day"
+          :index="index"
+          :activeDay="activeDay"
+          v-on:active="setActiveDay($event)"
+        ></day-weather>
       </div>
     </div>
   </div>
@@ -25,7 +30,8 @@ export default {
       httpForecast: "https://api.openweathermap.org/data/2.5/forecast/daily?q=",
       appid: "&appid=81631cc1843c3ced0966f73c8b9fcdf7",
       units: "metric",
-      daysNum: 5
+      daysNum: 5,
+      activeDay: 1
     };
   },
   methods: {
@@ -43,6 +49,9 @@ export default {
         this.forecastData = data.body.list;
         console.log(this.forecastData);
       });
+    },
+    setActiveDay(day) {
+      this.activeDay = day;
     }
   }
 };
@@ -55,11 +64,13 @@ export default {
 }
 
 body {
-  background: #eeeeee;
+  background: #fafafa;
+  font-family: "Nunito", sans-serif;
 }
 
 .app-container {
   width: 500px;
   margin: 90px auto;
+  position: relative;
 }
 </style>
