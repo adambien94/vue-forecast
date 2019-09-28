@@ -3,22 +3,23 @@
     <div class="day__date" ref="date">{{date}}</div>
     <div class="flex-container">
       <div class="day__temp" v-for="(name, key) in tempData">
-        <span class="day__label">{{name}}:</span>
-        <span class="day__value">{{dayData.temp[key]}}</span>
-        <span class="day__unit">&degC</span>
+        <weatherData :name="name" :value="dayData.temp[key]" unit="ºC"></weatherData>
       </div>
     </div>
     <div class="day__humidity">
-      <span class="day__label">Humidity:</span>
-      <span class="day__value">{{dayData.humidity}}</span>
-      <span class="day__unit">%</span>
+      <weatherData name="Humidity" :value="dayData.humidity" unit="%"></weatherData>
     </div>
   </div>
 </template>
 
 <script>
+import WeatherData from "./WeatherData";
+
 export default {
   name: "day-weather",
+  components: {
+    weatherData: WeatherData
+  },
   props: {
     dayData: Object,
     index: Number,
@@ -37,21 +38,26 @@ export default {
   methods: {
     setDate() {
       const d = new Date();
-      const day = d.getDate();
-      const month = d.getMonth();
+      let day = d.getDate();
+      let month = d.getMonth();
+      if (month < 10) {
+        month = "0" + month;
+      }
+      if (day < 10) {
+        day = "0" + day;
+      }
       this.date = month + " / " + (day + this.index);
     },
     positionDate() {
       const date = this.$refs.date;
       const dateWidth = date.getBoundingClientRect().width;
-      date.style.left = dateWidth * this.index - 1 + "px";
+      date.style.transform =
+        " translateY(-100%) translateX(" + 100 * this.index + "%)";
     },
     active() {
       this.$emit("active", this.index);
-    }
-  },
-  watch: {
-    activeDay() {
+    },
+    checkActive() {
       const day = this.$refs.day;
       if (this.activeDay === this.index) {
         day.classList.add("day--active");
@@ -60,21 +66,26 @@ export default {
       }
     }
   },
+  watch: {
+    activeDay() {
+      this.checkActive();
+    }
+  },
   created() {
     this.setDate();
   },
   mounted() {
     this.positionDate();
+    this.checkActive();
   }
 };
 </script>
 
-<style>
+<style scoped>
 .day {
   border: 1px solid #d7e0e5;
   margin-top: 58px;
   border-radius: 0 4px 4px 4px;
-  /* overflow: hidden; */
   font-size: 14px;
   line-height: 24px;
   font-weight: 600;
@@ -90,7 +101,7 @@ export default {
   color: #a7aeb2;
   font-weight: 600;
   position: absolute;
-  background: #eeeeee;
+  background: #f2f3f7;
   top: 0px;
   left: -1px;
   transform: translateY(-100%);
@@ -109,17 +120,14 @@ export default {
   background: #fcfdff;
   padding: 10px 15px;
   color: #0e0e0f;
+  border-top: 2px solid #fe5f55;
+  /* box-shadow: inset 0 4px 8px -4px #07a0ff; */
 }
 
 .flex-container {
   display: flex;
   justify-content: stretch;
   padding-bottom: 5px;
-}
-
-.day__label {
-  display: block;
-  color: #0e0e0f;
 }
 
 .day__temp,
@@ -130,7 +138,6 @@ export default {
 .day__temp {
   flex: 1;
   position: relative;
-  /* border-top: 1px solid gray; */
 }
 
 .day__temp:not(:nth-child(1)):after {
@@ -143,15 +150,5 @@ export default {
   top: 50%;
   transform: translateY(-50%);
   left: -20px;
-}
-
-.day__humidity {
-  /* border-top: 1px solid gray; */
-}
-
-.day__value,
-.day__unit {
-  color: #07a0ff;
-  font-size: 18px;
 }
 </style>
