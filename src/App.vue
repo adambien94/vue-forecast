@@ -54,6 +54,7 @@ export default {
   methods: {
     sendRequest(city) {
       this.loading = true;
+      this.requestSucced = false;
       let urlForecast =
         this.httpForecast +
         city +

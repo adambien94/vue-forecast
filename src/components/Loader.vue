@@ -22,7 +22,7 @@ export default {
 </script>
 
 <style scoped>
-@keyframes mymove {
+@keyframes pulse {
   0% {
     transform: scale(1);
   }
@@ -58,14 +58,14 @@ export default {
 }
 
 .loader__dot:nth-child(1) {
-  animation: mymove 0.75s infinite;
+  animation: pulse 0.75s infinite;
 }
 
 .loader__dot:nth-child(2) {
-  animation: mymove 0.75s infinite 0.07s;
+  animation: pulse 0.75s infinite 0.07s;
 }
 
 .loader__dot:nth-child(3) {
-  animation: mymove 0.75s infinite 0.14s;
+  animation: pulse 0.75s infinite 0.14s;
 }
 </style>

@@ -97,8 +97,6 @@ export default {
 };
 </script>
 
-
-
 <style scoped>
 .info-container {
   border-radius: 0 4px 4px 4px;
@@ -121,7 +119,7 @@ export default {
   font-size: 16px;
   padding: 5px 15px;
   color: #a7aeb2;
-  background: #f2f3f7;
+  background: #edf0f7;
   top: 0px;
   left: -1px;
   transform: translateY(1px);
