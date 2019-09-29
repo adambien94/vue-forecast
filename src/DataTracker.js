@@ -30,8 +30,8 @@ class DataTracker {
         maxCount = count;
         maxValue = this.values[i];
       }
-      return maxValue;
     }
+    return maxValue;
   }
 }
 
