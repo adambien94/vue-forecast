@@ -1,20 +1,20 @@
 <template>
-  <div id="days" class="days">
-    <div class="days__dates">
+  <div id="forecast" class="forecast">
+    <div class="forecast__dates">
       <div
-        class="days__date"
+        class="forecast__date"
         v-for="index in daysNum"
         @click="active(index); checkActive()"
         ref="date"
-      >{{month}} / {{day + index - 1}}</div>
+      >{{setDay(index)}}</div>
     </div>
     <div class="info-container">
-      <div class="days__temp-info">
-        <div class="days__temp" v-for="(name, key) in tempData">
+      <div class="forecast__temps">
+        <div class="forecast__temp" v-for="(name, key) in tempData">
           <weatherData :name="name" :value="dayData.temp[key]" unit="ºC"></weatherData>
         </div>
       </div>
-      <div class="days__humidity-info">
+      <div class="forecast__humidity-info">
         <weatherData name="Humidity" :value="dayData.humidity" unit="%"></weatherData>
       </div>
     </div>
@@ -25,7 +25,7 @@
 import WeatherData from "./WeatherData";
 
 export default {
-  name: "days",
+  name: "forecast",
   components: {
     weatherData: WeatherData
   },
@@ -37,11 +37,11 @@ export default {
   data() {
     return {
       tempData: {
+        morn: "Morning temp",
         day: "Day temp",
-        night: "Night temp",
-        morn: "Morning temp"
+        night: "Night temp"
       },
-      day: null,
+      day: "",
       month: null,
       index: 0
     };
@@ -60,6 +60,35 @@ export default {
       this.month = month;
       this.day = day;
     },
+    setDay(index) {
+      let dayNum = new Date().getDay() + index - 1;
+      dayNum > 6 && (dayNum -= 6);
+      let day;
+      switch (dayNum) {
+        case 0:
+          day = "Sun.";
+          break;
+        case 1:
+          day = "Mon.";
+          break;
+        case 2:
+          day = "Tue.";
+          break;
+        case 3:
+          day = "Wed.";
+          break;
+        case 4:
+          day = "Thu.";
+          break;
+        case 5:
+          day = "Fri.";
+          break;
+        case 6:
+          day = "Sat.";
+          break;
+      }
+      return day;
+    },
     active(index) {
       this.index = index - 1;
       this.$emit("active", this.index);
@@ -68,15 +97,12 @@ export default {
       const dates = this.$refs.date;
       for (let date of dates) {
         if (dates.indexOf(date) === this.index) {
-          date.classList.add("days__date--active");
+          date.classList.add("forecast__date--active");
         } else {
-          date.classList.remove("days__date--active");
+          date.classList.remove("forecast__date--active");
         }
       }
     }
-  },
-  created() {
-    this.setDate();
   },
   mounted() {
     this.checkActive();
@@ -87,11 +113,15 @@ export default {
 
 
 <style scoped>
-.days {
+.info-container {
+  border-radius: 0 4px 4px 4px;
+}
+
+.forecast {
   position: relative;
 }
 
-.days__dates {
+.forecast__dates {
   padding-top: 0px;
   width: 100%;
   display: flex;
@@ -100,11 +130,10 @@ export default {
   height: 44px;
 }
 
-.days__date {
+.forecast__date {
   font-size: 16px;
   padding: 5px 15px;
   color: #a7aeb2;
-  font-weight: 600;
   background: #f2f3f7;
   top: 0px;
   left: -1px;
@@ -114,9 +143,10 @@ export default {
   border-radius: 4px 4px 0 0;
   cursor: pointer;
   transition: all 0.1s;
+  width: 55px;
 }
 
-.days__date--active {
+.forecast__date--active {
   background: #fcfdff;
   padding: 10px 15px;
   color: #0e0e0f;
@@ -124,31 +154,26 @@ export default {
   border-bottom: none;
 }
 
-.info-container {
-  border-radius: 0 4px 4px 4px;
-}
-
-.days__temp-info {
+.forecast__temps {
   width: 100%;
   display: flex;
-  justify-content: space-around;
 }
 
-.days__temp,
-.days__humidity-info {
+.forecast__temp,
+.forecast__humidity-info {
   padding: 4px 0;
 }
 
-.days__temp {
+.forecast__temp {
   flex: 1;
   position: relative;
 }
 
-.days__temp:not(:nth-child(1)) {
+.forecast__temp:not(:nth-child(1)) {
   padding-left: 20px;
 }
 
-.days__temp:not(:nth-child(1)):after {
+.forecast__temp:not(:nth-child(1)):after {
   content: "";
   display: block;
   position: absolute;

@@ -1,15 +1,15 @@
 <template>
   <div id="app">
     <div class="app-container">
-      <user-input v-on:submitCity="sendRequest($event)"></user-input>
+      <user-input v-on:submitCity="sendRequest($event)" :error="error" :errorMsg="errorMsg"></user-input>
       <div class="comp-wrapper">
-        <days
+        <forecast
           v-if="requestSucced"
           :daysNum="daysNum"
           :activeDay="activeDay"
           :dayData="forecastData[activeDay]"
           v-on:active="setActiveDay($event)"
-        ></days>
+        ></forecast>
       </div>
       <div class="comp-wrapper">
         <statistics :forecastData="forecastData" v-if="requestSucced"></statistics>
@@ -20,17 +20,15 @@
 
 <script>
 import UserInput from "./components/UserInput";
-import DayWeather from "./components/DayWeather";
 import Statistics from "./components/Statistics";
-import Days from "./components/Days";
+import Forecast from "./components/Forecast";
 
 export default {
   name: "App",
   components: {
     userInput: UserInput,
-    dayWeather: DayWeather,
     statistics: Statistics,
-    days: Days
+    forecast: Forecast
   },
   data() {
     return {
@@ -44,7 +42,9 @@ export default {
       nightTemps: [],
       morningTemps: [],
       humidities: [],
-      requestSucced: false
+      requestSucced: false,
+      error: false,
+      errorMsg: ""
     };
   },
   methods: {
@@ -58,11 +58,24 @@ export default {
         "&cnt=" +
         this.daysNum;
 
-      this.$http.get(urlForecast).then(data => {
-        this.forecastData = data.body.list;
-        this.updateData();
-        this.requestSucced = true;
-      });
+      this.$http.get(urlForecast).then(
+        data => {
+          this.forecastData = data.body.list;
+          this.updateData();
+          this.requestSucced = true;
+          this.error = false;
+        },
+        response => {
+          if (response.status === 400) {
+            this.error = true;
+            this.errorMsg = "Enter city name";
+          }
+          if (response.status === 404) {
+            this.error = true;
+            this.errorMsg = "Didn't found '" + city + "' 😕";
+          }
+        }
+      );
     },
     setActiveDay(day) {
       this.activeDay = day;

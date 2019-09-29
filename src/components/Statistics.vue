@@ -1,18 +1,27 @@
 <template>
-  <div id="statistics" class="info-container">
-    <ul class="props-list">
-      <li class="props-list__item" v-for="prop in dataProps">
-        {{prop.propName}} - min:
-        <span class="props-list__val">{{prop.propStats.showMax()}}</span> / max:
-        <span class="props-list__val">{{prop.propStats.showMin()}}</span> / mean:
-        <span class="props-list__val">{{round(prop.propStats.showMean())}}</span>
+  <div id="statistics" class="stats info-container">
+    <div class="flex-container">
+      <span class="stats__label">min</span>
+      <span class="stats__label">max</span>
+      <span class="stats__label">mean</span>
+      <span class="stats__label">mode</span>
+    </div>
+    <ul class="stats__props-list">
+      <li class="stats__item" v-for="prop in dataProps">
+        {{prop.propName}}:
+        <div class="flex-container">
+          <span class="stats__value">{{prop.propStats.showMin()}} {{prop.unit}}</span>
+          <span class="stats__value">{{prop.propStats.showMax()}} {{prop.unit}}</span>
+          <span class="stats__value">{{round(prop.propStats.showMean(), 2)}} {{prop.unit}}</span>
+          <span class="stats__value">{{round(prop.propStats.showMode(), 0)}} {{prop.unit}}</span>
+        </div>
       </li>
     </ul>
   </div>
 </template>
 
 <script>
-import Statistic from "./Statistic";
+import Statistic from "../mixins/Statistic";
 
 export default {
   name: "statistics",
@@ -24,19 +33,24 @@ export default {
       dataProps: [
         {
           propName: "Morning temp",
+          unit: "ºC",
+
           propStats: null
         },
         {
           propName: "Day temp",
+          unit: "ºC",
           propStats: null
         },
         {
           propName: "Night temp",
+          unit: "ºC",
           propStats: null
         },
         {
           propName: "Humidity",
-          propStats: null
+          propStats: null,
+          unit: "%"
         }
       ]
     };
@@ -51,8 +65,8 @@ export default {
       this.dataProps[2].propStats = new Statistic(this.nightTempData);
       this.dataProps[3].propStats = new Statistic(this.humidityData);
     },
-    round(val) {
-      let factor = Math.pow(10, 2);
+    round(val, k) {
+      let factor = Math.pow(10, k);
       return Math.round(val * factor) / factor;
     }
   },
@@ -99,16 +113,31 @@ export default {
 
 
 <style scoped>
-.props-list {
+.stats__label {
+  flex: 1;
+  text-align: right;
+  font-weight: 400;
+}
+
+.stats__props-list {
   list-style: none;
 }
 
-.props-list__item {
+.stats__item {
   line-height: 30px;
+  display: flex;
 }
 
-.props-list__val {
+.flex-container {
+  margin-left: auto;
+  display: inline-block;
+  width: 350px;
+  display: flex;
+  justify-content: space-between;
+}
+.stats__value {
+  flex: 1;
+  text-align: right;
   color: #07a0ff;
-  font-size: 18px;
 }
 </style>

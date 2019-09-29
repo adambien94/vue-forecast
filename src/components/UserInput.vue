@@ -1,7 +1,15 @@
 <template>
   <div id="user-input">
     <form class="search-form">
-      <input type="text" class="search-form__input" v-model="city" placeholder="search city.." />
+      <span class="error-msg" v-if="this.error">{{errorMsg}}</span>
+      <input
+        type="text"
+        class="search-form__input"
+        v-model="city"
+        placeholder="enter city.."
+        @click="setPlaceholder()"
+        ref="input"
+      />
       <input
         type="submit"
         class="search-form__submit"
@@ -15,15 +23,22 @@
 <script>
 export default {
   name: "user-input",
-  props: {},
+  props: {
+    error: Boolean,
+    errorMsg: String
+  },
   data() {
     return {
-      city: null
+      city: ""
     };
   },
   methods: {
     submitCity() {
       this.$emit("submitCity", this.city);
+    },
+    setPlaceholder() {
+      this.city !== "" && (this.$refs.input.placeholder = this.city);
+      this.city = "";
     }
   }
 };
@@ -32,6 +47,12 @@ export default {
 <style scoped>
 .search-form {
   position: relative;
+}
+
+.error-msg {
+  position: absolute;
+  top: -35px;
+  color: #fe5f55;
 }
 
 .search-form__input,
@@ -62,5 +83,10 @@ export default {
   position: absolute;
   top: 0;
   right: 0;
+  transition: transform 0.1s;
+}
+
+.search-form__submit:hover {
+  transform: translateY(-1px);
 }
 </style>

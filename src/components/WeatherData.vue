@@ -34,7 +34,6 @@ export default {
 .data__temp {
   flex: 1;
   position: relative;
-  /* border-top: 1px solid gray; */
 }
 
 .data__temp:not(:nth-child(1)):after {
@@ -49,13 +48,10 @@ export default {
   left: -20px;
 }
 
-.data__humidity {
-  /* border-top: 1px solid gray; */
-}
-
 .data__value,
 .data__unit {
   color: #07a0ff;
+  font-weight: 400;
   font-size: 18px;
 }
 </style>
