@@ -47,19 +47,6 @@ export default {
     };
   },
   methods: {
-    setDate() {
-      const d = new Date();
-      let day = d.getDate();
-      let month = d.getMonth();
-      if (month < 10) {
-        month = "0" + month;
-      }
-      if (day < 10) {
-        day = "0" + day;
-      }
-      this.month = month;
-      this.day = day;
-    },
     setDay(index) {
       let dayNum = new Date().getDay() + index - 1;
       dayNum > 6 && (dayNum -= 6);

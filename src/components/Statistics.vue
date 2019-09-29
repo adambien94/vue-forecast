@@ -65,8 +65,8 @@ export default {
       this.dataProps[2].propStats = new Statistic(this.nightTempData);
       this.dataProps[3].propStats = new Statistic(this.humidityData);
     },
-    round(val, k) {
-      let factor = Math.pow(10, k);
+    round(val, decimalPlace) {
+      let factor = Math.pow(10, decimalPlace);
       return Math.round(val * factor) / factor;
     }
   },

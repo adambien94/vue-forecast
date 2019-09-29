@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <div class="app-container">
+      <loader v-if="loading"></loader>
       <user-input v-on:submitCity="sendRequest($event)" :error="error" :errorMsg="errorMsg"></user-input>
       <div class="comp-wrapper">
         <forecast
@@ -22,13 +23,15 @@
 import UserInput from "./components/UserInput";
 import Statistics from "./components/Statistics";
 import Forecast from "./components/Forecast";
+import Loader from "./components/Loader";
 
 export default {
   name: "App",
   components: {
     userInput: UserInput,
     statistics: Statistics,
-    forecast: Forecast
+    forecast: Forecast,
+    loader: Loader
   },
   data() {
     return {
@@ -44,11 +47,13 @@ export default {
       humidities: [],
       requestSucced: false,
       error: false,
-      errorMsg: ""
+      errorMsg: "",
+      loading: false
     };
   },
   methods: {
     sendRequest(city) {
+      this.loading = true;
       let urlForecast =
         this.httpForecast +
         city +
@@ -62,15 +67,18 @@ export default {
         data => {
           this.forecastData = data.body.list;
           this.updateData();
+          this.loading = false;
           this.requestSucced = true;
           this.error = false;
         },
         response => {
           if (response.status === 400) {
+            this.loading = false;
             this.error = true;
             this.errorMsg = "Enter city name";
           }
           if (response.status === 404) {
+            this.loading = false;
             this.error = true;
             this.errorMsg = "Didn't found '" + city + "' 😕";
           }
@@ -113,6 +121,7 @@ body {
 .app-container {
   width: 500px;
   margin: 90px auto;
+  position: relative;
 }
 
 .info-container {
