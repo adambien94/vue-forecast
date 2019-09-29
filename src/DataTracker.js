@@ -1,6 +1,9 @@
-class Statistic {
+class DataTracker {
   constructor(values) {
-    this.values = values;
+    this.values = values || [];
+  }
+  insert(val) {
+    this.values.push(val);
   }
   showMin() {
     return Math.min.apply(Math, this.values);
@@ -32,4 +35,4 @@ class Statistic {
   }
 }
 
-export default Statistic;
+export default DataTracker;

@@ -136,7 +136,7 @@ export default {
   padding: 10px 15px;
   color: #0e0e0f;
   border-top: 2px solid #fe5f55;
-  border-bottom: none;
+  border-bottom-color: #fcfdff;
 }
 
 .forecast__temps {

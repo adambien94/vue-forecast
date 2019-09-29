@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import Statistic from "../mixins/Statistic";
+import DataTracker from "../DataTracker";
 
 export default {
   name: "statistics",
@@ -60,10 +60,10 @@ export default {
       for (let item of this.dataProps) {
         item.dataProps = null;
       }
-      this.dataProps[0].propStats = new Statistic(this.mornTempData);
-      this.dataProps[1].propStats = new Statistic(this.dayTempData);
-      this.dataProps[2].propStats = new Statistic(this.nightTempData);
-      this.dataProps[3].propStats = new Statistic(this.humidityData);
+      this.dataProps[0].propStats = new DataTracker(this.mornTempData);
+      this.dataProps[1].propStats = new DataTracker(this.dayTempData);
+      this.dataProps[2].propStats = new DataTracker(this.nightTempData);
+      this.dataProps[3].propStats = new DataTracker(this.humidityData);
     },
     round(val, decimalPlace) {
       let factor = Math.pow(10, decimalPlace);

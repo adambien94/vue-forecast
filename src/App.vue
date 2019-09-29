@@ -5,7 +5,7 @@
       <user-input v-on:submitCity="sendRequest($event)" :error="error" :errorMsg="errorMsg"></user-input>
       <div class="comp-wrapper">
         <forecast
-          v-if="requestSucced"
+          v-if="requestSucceed"
           :daysNum="daysNum"
           :activeDay="activeDay"
           :dayData="forecastData[activeDay]"
@@ -13,7 +13,7 @@
         ></forecast>
       </div>
       <div class="comp-wrapper">
-        <statistics :forecastData="forecastData" v-if="requestSucced"></statistics>
+        <statistics :forecastData="forecastData" v-if="requestSucceed"></statistics>
       </div>
     </div>
   </div>
@@ -45,7 +45,7 @@ export default {
       nightTemps: [],
       morningTemps: [],
       humidities: [],
-      requestSucced: false,
+      requestSucceed: false,
       error: false,
       errorMsg: "",
       loading: false
@@ -54,7 +54,7 @@ export default {
   methods: {
     sendRequest(city) {
       this.loading = true;
-      this.requestSucced = false;
+      this.requestSucceed = false;
       let urlForecast =
         this.httpForecast +
         city +
@@ -69,7 +69,7 @@ export default {
           this.forecastData = data.body.list;
           this.updateData();
           this.loading = false;
-          this.requestSucced = true;
+          this.requestSucceed = true;
           this.error = false;
         },
         response => {
