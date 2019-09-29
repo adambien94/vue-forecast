@@ -139,5 +139,6 @@ export default {
   flex: 1;
   text-align: right;
   color: #07a0ff;
+  font-weight: 600;
 }
 </style>

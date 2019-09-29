@@ -162,11 +162,11 @@ export default {
   content: "";
   display: block;
   position: absolute;
-  height: 30px;
+  height: 40px;
   width: 1px;
   background: #d7e0e5;
   top: 50%;
   transform: translateY(-50%);
-  left: -20px;
+  left: -10px;
 }
 </style>

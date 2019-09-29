@@ -129,8 +129,8 @@ body {
   border: 1px solid #d7e0e5;
   border-radius: 4px;
   font-size: 14px;
+  font-weight: 400;
   line-height: 24px;
-  font-weight: 600;
   padding: 20px 20px;
   background: #fcfdff;
 }
