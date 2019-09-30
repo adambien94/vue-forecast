@@ -6,7 +6,7 @@
         v-for="index in daysNum"
         @click="active(index); checkActive()"
         ref="date"
-      >{{setDay(index)}}</div>
+      >{{days[getDayNum(index)]}}</div>
     </div>
     <div class="info-container">
       <div class="forecast__temps">
@@ -41,40 +41,15 @@ export default {
         day: "Day temp",
         night: "Night temp"
       },
-      day: "",
-      month: null,
+      days: ["Sun.", "Mon.", "Tue.", "Wed.", "Thu.", "Fri.", "Sat."],
       index: 0
     };
   },
   methods: {
-    setDay(index) {
+    getDayNum(index) {
       let dayNum = new Date().getDay() + index - 1;
       dayNum > 6 && (dayNum -= 6);
-      let day;
-      switch (dayNum) {
-        case 0:
-          day = "Sun.";
-          break;
-        case 1:
-          day = "Mon.";
-          break;
-        case 2:
-          day = "Tue.";
-          break;
-        case 3:
-          day = "Wed.";
-          break;
-        case 4:
-          day = "Thu.";
-          break;
-        case 5:
-          day = "Fri.";
-          break;
-        case 6:
-          day = "Sat.";
-          break;
-      }
-      return day;
+      return dayNum;
     },
     active(index) {
       this.index = index - 1;
@@ -99,7 +74,7 @@ export default {
 
 <style scoped>
 .info-container {
-  border-radius: 0 4px 4px 4px;
+  border-radius: 0 0 4px 4px;
 }
 
 .forecast {
@@ -125,17 +100,23 @@ export default {
   transform: translateY(1px);
   z-index: 1;
   border: 1px solid #d7e0e5;
+  border-left-color: #edf0f7;
   border-radius: 4px 4px 0 0;
   cursor: pointer;
   transition: all 0.1s;
-  width: 55px;
+  flex: 1;
+}
+
+.forecast__date:nth-child(1) {
+  border-left-color: #d7e0e5;
 }
 
 .forecast__date--active {
   background: #fcfdff;
   padding: 10px 15px;
-  color: #0e0e0f;
+  color: #000;
   border-top: 2px solid #fe5f55;
+  border-left-color: #d7e0e5;
   border-bottom-color: #fcfdff;
 }
 

@@ -23,7 +23,6 @@ export default {
 <style>
 .data__label {
   display: block;
-  color: #0e0e0f;
 }
 
 .data__temp,
@@ -52,6 +51,6 @@ export default {
 .data__unit {
   color: #07a0ff;
   font-weight: 400;
-  font-size: 18px;
+  font-size: 17px;
 }
 </style>
