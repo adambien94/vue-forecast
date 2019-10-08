@@ -7,13 +7,17 @@
       <span class="stats__label">mode</span>
     </div>
     <ul class="stats__props-list">
-      <li class="stats__item" v-for="prop in dataProps">
-        {{prop.propName}}:
+      <li class="stats__item" v-for="prop in transformedDataProps">
+        {{dataProps[prop].propName}}:
         <div class="flex-container">
-          <span class="stats__value">{{prop.propStats.showMin()}} {{prop.unit}}</span>
-          <span class="stats__value">{{prop.propStats.showMax()}} {{prop.unit}}</span>
-          <span class="stats__value">{{round(prop.propStats.showMean(), 2)}} {{prop.unit}}</span>
-          <span class="stats__value">{{round(prop.propStats.showMode(), 0)}} {{prop.unit}}</span>
+          <span class="stats__value">{{dataProps[prop].propStats.showMin()}} {{prop.unit}}</span>
+          <span class="stats__value">{{dataProps[prop].propStats.showMax()}} {{prop.unit}}</span>
+          <span
+            class="stats__value"
+          >{{round(dataProps[prop].propStats.showMean(), 2)}} {{prop.unit}}</span>
+          <span
+            class="stats__value"
+          >{{round(dataProps[prop].propStats.showMode(), 0)}} {{prop.unit}}</span>
         </div>
       </li>
     </ul>
@@ -30,40 +34,39 @@ export default {
   },
   data() {
     return {
-      dataProps: [
-        {
+      dataProps: {
+        morningTemp: {
           propName: "Morning temp",
           unit: "ºC",
-
           propStats: null
         },
-        {
+        dayTemp: {
           propName: "Day temp",
           unit: "ºC",
           propStats: null
         },
-        {
+        nightTemp: {
           propName: "Night temp",
           unit: "ºC",
           propStats: null
         },
-        {
+        humidity: {
           propName: "Humidity",
-          propStats: null,
-          unit: "%"
+          unit: "ºC",
+          propStats: null
         }
-      ]
+      }
     };
   },
   methods: {
     setStats() {
-      for (let item of this.dataProps) {
-        item.dataProps = null;
+      for (let prop of this.transformedDataProps) {
+        this.dataProps[prop].dataProps = null;
       }
-      this.dataProps[0].propStats = new DataTracker(this.mornTempData);
-      this.dataProps[1].propStats = new DataTracker(this.dayTempData);
-      this.dataProps[2].propStats = new DataTracker(this.nightTempData);
-      this.dataProps[3].propStats = new DataTracker(this.humidityData);
+      this.dataProps.morningTemp.propStats = new DataTracker(this.mornTempData);
+      this.dataProps.dayTemp.propStats = new DataTracker(this.dayTempData);
+      this.dataProps.nightTemp.propStats = new DataTracker(this.nightTempData);
+      this.dataProps.humidity.propStats = new DataTracker(this.humidityData);
     },
     round(val, decimalPlace) {
       let factor = Math.pow(10, decimalPlace);
@@ -98,6 +101,10 @@ export default {
         arr.push(data.humidity);
       }
       return arr;
+    },
+    transformedDataProps() {
+      let arr = Object.keys(this.dataProps);
+      return arr;
     }
   },
   watch: {
@@ -107,6 +114,7 @@ export default {
   },
   created() {
     this.setStats();
+    console.log(this.transformedDataProps);
   }
 };
 </script>

@@ -14,7 +14,7 @@
           <weatherData :name="name" :value="dayData.temp[key]" unit="ºC"></weatherData>
         </div>
       </div>
-      <div class="forecast__humidity-info">
+      <div class="forecast__humidity">
         <weatherData name="Humidity" :value="dayData.humidity" unit="%"></weatherData>
       </div>
     </div>
@@ -48,7 +48,7 @@ export default {
   methods: {
     getDayNum(index) {
       let dayNum = new Date().getDay() + index - 1;
-      dayNum > 6 && (dayNum -= 6);
+      dayNum > 6 && (dayNum -= 7);
       return dayNum;
     },
     active(index) {
@@ -74,7 +74,7 @@ export default {
 
 <style scoped>
 .info-container {
-  border-radius: 0 0 4px 4px;
+  border-radius: 0 4px 4px 4px;
 }
 
 .forecast {
@@ -104,7 +104,7 @@ export default {
   border-radius: 4px 4px 0 0;
   cursor: pointer;
   transition: all 0.1s;
-  flex: 1;
+  width: 50px;
 }
 
 .forecast__date:nth-child(1) {
@@ -115,7 +115,6 @@ export default {
   background: #fcfdff;
   padding: 10px 15px;
   color: #000;
-  border-top: 2px solid #fe5f55;
   border-left-color: #d7e0e5;
   border-bottom-color: #fcfdff;
 }
@@ -123,20 +122,17 @@ export default {
 .forecast__temps {
   width: 100%;
   display: flex;
+  justify-content: space-between;
 }
 
 .forecast__temp,
-.forecast__humidity-info {
+.forecast__humidity {
   padding: 4px 0;
 }
 
 .forecast__temp {
   flex: 1;
   position: relative;
-}
-
-.forecast__temp:not(:nth-child(1)) {
-  padding-left: 20px;
 }
 
 .forecast__temp:not(:nth-child(1)):after {

@@ -6,10 +6,10 @@ class DataTracker {
     this.values.push(val);
   }
   showMin() {
-    return Math.min.apply(Math, this.values);
+    return Math.min(...this.values);
   }
   showMax() {
-    return Math.max.apply(Math, this.values);
+    return Math.max(...this.values);
   }
   showMean() {
     let sum = 0;

@@ -81,7 +81,7 @@ export default {
           if (response.status === 404) {
             this.loading = false;
             this.error = true;
-            this.errorMsg = "Didn't found '" + city + "' 😕";
+            this.errorMsg = "Didn't find '" + city + "' 😕";
           }
         }
       );

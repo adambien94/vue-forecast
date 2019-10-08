@@ -34,7 +34,7 @@ export default {
   },
   methods: {
     submitCity() {
-      this.$emit("submitCity", this.city);
+      this.$emit("submitCity", this.city.trim());
     },
     setPlaceholder() {
       this.city !== "" && (this.$refs.input.placeholder = this.city);
